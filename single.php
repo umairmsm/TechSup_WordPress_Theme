@@ -1,0 +1,51 @@
+<?php
+/**
+ * The template for displaying single posts
+ */
+
+get_header();
+?>
+
+<main id="primary" class="site-main techsup-content">
+    <div class="techsup-container">
+        <div class="techsup-grid <?php echo techsup_has_sidebar() ? 'has-sidebar' : ''; ?>">
+            
+            <div class="content-area">
+                <?php techsup_before_content(); ?>
+                
+                <?php
+                while ( have_posts() ) :
+                    the_post();
+                    
+                    // Display post content
+                    get_template_part( 'template-parts/content', get_post_type() );
+                    
+                    // STEP 2A: Social sharing buttons
+                    techsup_social_share();
+                    
+                    // STEP 2B: Previous/Next post navigation
+                    techsup_post_navigation();
+                    
+                    // STEP 2C: Comments section
+                    if ( comments_open() || get_comments_number() ) :
+                        comments_template();
+                    endif;
+                    
+                endwhile;
+                ?>
+                
+                <?php techsup_after_content(); ?>
+            </div>
+            
+            <?php
+            if ( techsup_has_sidebar() ) {
+                get_sidebar();
+            }
+            ?>
+            
+        </div>
+    </div>
+</main>
+
+<?php
+get_footer();

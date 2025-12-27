@@ -1,0 +1,647 @@
+/*
+Theme Name: TechSup Framework
+Theme URI: https://yourdomain.com
+Description: A high-performance, hook-driven WordPress framework with Block Element support.
+Version: 2.0.0
+Author: TechSup
+Text Domain: techsup-theme
+*/
+
+/* ============================================================================
+   1. DESIGN TOKENS (The Variable Engine)
+   ========================================================================== */
+:root {
+    /* Layout */
+    --container-width: 1200px;
+    --gap-base: 20px;
+    --gap-double: 40px;
+    --header-height: 70px;
+    
+    /* Typography (Defaults - Overridden by Customizer) */
+    --font-body: system-ui, -apple-system, sans-serif;
+    --font-heading: system-ui, -apple-system, sans-serif;
+    --size-base: 17px;
+    --line-height: 1.6;
+    
+    /* Colors (Defaults) */
+    --color-primary: #0073aa;
+    --color-text: #333333;
+    --color-bg: #ffffff;
+    --color-bg-alt: #f5f5f5;
+    --color-border: #e5e5e5;
+}
+
+/* ============================================================================
+   2. RESET & BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--size-base);
+    line-height: var(--line-height);
+    color: var(--color-text);
+    background: var(--color-bg);
+}
+
+img { max-width: 100%; height: auto; }
+
+/* ============================================================================
+   3. THE GRID (Layout System)
+   ========================================================================== */
+.techsup-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--gap-base);
+    width: 100%;
+}
+
+.techsup-grid {
+    display: grid;
+    grid-template-columns: 100%; /* Mobile Default */
+    gap: var(--gap-double);
+}
+
+@media (min-width: 768px) {
+    .techsup-grid.has-sidebar {
+        grid-template-columns: 1fr 300px; /* Content | Sidebar */
+    }
+}
+
+/* ============================================================================
+   4. COMPONENTS
+   ========================================================================== */
+/* Header */
+.site-header {
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--gap-base) 0;
+    transition: background 0.3s;
+}
+
+.techsup-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Navigation */
+.main-navigation ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--gap-base);
+}
+
+.main-navigation a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.main-navigation a:hover { color: var(--color-primary); }
+
+/* Mobile Menu Toggle (Hidden on Desktop) */
+.menu-toggle { display: none; }
+
+@media (max-width: 768px) {
+    .menu-toggle { display: block; background: none; border: 1px solid var(--color-border); padding: 5px 10px; }
+    .main-navigation ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--color-bg);
+        border-bottom: 1px solid var(--color-border);
+        padding: var(--gap-base);
+        z-index: 99;
+    }
+    .main-navigation.toggled ul { display: flex; }
+    .techsup-header-inner { flex-wrap: wrap; position: relative; }
+}
+
+/* Sidebar & Widgets */
+.techsup-sidebar { background: var(--color-bg-alt); padding: var(--gap-base); }
+.widget { margin-bottom: var(--gap-double); }
+.widget-title { border-bottom: 2px solid var(--color-border); padding-bottom: 10px; margin-bottom: 15px; }
+
+/* Footer */
+.site-footer {
+    background: #222;
+    color: #fff;
+    padding: var(--gap-double) 0;
+    margin-top: var(--gap-double);
+}
+.site-footer a { color: #ccc; }
+
+/* ============================================================================
+   5. PRO UTILITIES (Transparency & Elements)
+   ========================================================================== */
+/* Transparent Header Override */
+body.transparent-header-enabled .site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    border-bottom: none;
+    z-index: 100;
+}
+body.transparent-header-enabled .site-header a { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+/* Block Element Container */
+.techsup-element {
+    margin-bottom: var(--gap-base);
+}
+
+// ============================================================================
+// BONUS: Enhanced CSS for better post/page styling
+// ADD THIS TO: style.css (at the bottom)
+// ============================================================================
+
+/* ============================================================================
+   6. POST & PAGE CONTENT STYLING
+   ========================================================================== */
+
+/* Entry Header */
+.entry-header {
+    margin-bottom: var(--gap-base);
+    padding-bottom: var(--gap-base);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.entry-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text);
+}
+
+.entry-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.entry-title a:hover {
+    color: var(--color-primary);
+}
+
+/* Entry Meta */
+.entry-meta {
+    font-size: 0.875rem;
+    color: #666;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.entry-meta a {
+    color: #666;
+    text-decoration: none;
+}
+
+.entry-meta a:hover {
+    color: var(--color-primary);
+}
+
+/* Post Thumbnail */
+.post-thumbnail {
+    margin-bottom: var(--gap-base);
+}
+
+.post-thumbnail img {
+    display: block;
+    border-radius: 4px;
+}
+
+/* Entry Content */
+.entry-content {
+    margin-top: var(--gap-base);
+}
+
+.entry-content > * + * {
+    margin-top: 1.5em;
+}
+
+.entry-content h2,
+.entry-content h3,
+.entry-content h4 {
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    line-height: 1.3;
+}
+
+.entry-content h2 { font-size: 1.75rem; }
+.entry-content h3 { font-size: 1.5rem; }
+.entry-content h4 { font-size: 1.25rem; }
+
+.entry-content ul,
+.entry-content ol {
+    padding-left: 1.5em;
+}
+
+.entry-content li + li {
+    margin-top: 0.5em;
+}
+
+.entry-content blockquote {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1.5em;
+    margin-left: 0;
+    font-style: italic;
+    color: #555;
+}
+
+.entry-content code {
+    background: var(--color-bg-alt);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.entry-content pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.entry-content pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* More Link */
+.more-link {
+    display: inline-block;
+    margin-top: 1em;
+    padding: 8px 16px;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.more-link:hover {
+    opacity: 0.9;
+}
+
+/* Entry Footer */
+.entry-footer {
+    margin-top: var(--gap-base);
+    padding-top: var(--gap-base);
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875rem;
+}
+
+.entry-footer > span {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.entry-footer a {
+    color: #666;
+    text-decoration: none;
+}
+
+.entry-footer a:hover {
+    color: var(--color-primary);
+}
+
+/* Post Navigation (Prev/Next) */
+.post-navigation {
+    margin-top: var(--gap-double);
+    padding-top: var(--gap-base);
+    border-top: 1px solid var(--color-border);
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.nav-previous,
+.nav-next {
+    flex: 1;
+}
+
+.nav-next {
+    text-align: right;
+}
+
+.nav-subtitle {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.nav-title {
+    display: block;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.post-navigation a:hover .nav-title {
+    color: var(--color-primary);
+}
+
+/* No Results / 404 */
+.no-results {
+    text-align: center;
+    padding: var(--gap-double) 0;
+}
+
+.page-header {
+    margin-bottom: var(--gap-base);
+}
+
+.page-title {
+    font-size: 2rem;
+    margin: 0;
+}
+
+/* Page Links (Multi-page posts) */
+.page-links {
+    margin-top: 2em;
+    padding: 1em;
+    background: var(--color-bg-alt);
+    border-radius: 4px;
+}
+
+.page-links a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+    background: #fff;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.page-links a:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+/* ============================================================================
+   7. POST META & FOOTER ENHANCEMENTS
+   ========================================================================== */
+
+/* Entry Meta */
+.entry-meta {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0.75rem 0 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.entry-meta a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.entry-meta a:hover {
+    color: var(--color-primary);
+}
+
+.entry-meta span:before {
+    margin-right: 5px;
+}
+
+.posted-on:before { content: "📅"; }
+.byline:before { content: "👤"; }
+.comments-link:before { content: "💬"; }
+.reading-time:before { content: "⏱️"; }
+.post-views:before { content: "👁️"; }
+
+/* Entry Footer */
+.entry-footer {
+    margin-top: var(--gap-base);
+    padding-top: var(--gap-base);
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.entry-footer a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.entry-footer a:hover {
+    color: var(--color-primary);
+}
+
+.cat-links:before { content: "📁 "; }
+.tags-links:before { content: "🏷️ "; }
+.edit-link:before { content: "✏️ "; }
+
+/* Social Share Buttons */
+.social-share {
+    margin: var(--gap-double) 0;
+    padding: var(--gap-base);
+    background: var(--color-bg-alt);
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-label {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.social-share a {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.social-share a:hover {
+    opacity: 0.85;
+}
+
+.share-twitter { background: #1DA1F2; }
+.share-facebook { background: #1877F2; }
+.share-linkedin { background: #0A66C2; }
+.share-email { background: #666; }
+
+/* Mobile responsive social buttons */
+@media (max-width: 600px) {
+    .social-share {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .social-share a {
+        text-align: center;
+    }
+}
+
+/* Post Navigation (Prev/Next) */
+.post-navigation {
+    margin: var(--gap-double) 0;
+    padding-top: var(--gap-base);
+    border-top: 2px solid var(--color-border);
+}
+
+.post-navigation .nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .post-navigation .nav-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+.post-navigation a {
+    display: block;
+    padding: 15px;
+    background: var(--color-bg-alt);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.post-navigation a:hover {
+    background: var(--color-border);
+}
+
+.nav-subtitle {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.nav-title {
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.nav-next {
+    text-align: right;
+}
+
+/* Comments Section */
+.comments-area {
+    margin-top: var(--gap-double);
+    padding-top: var(--gap-base);
+    border-top: 2px solid var(--color-border);
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--gap-base);
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comment {
+    margin-bottom: var(--gap-base);
+}
+
+.comment-body {
+    padding: var(--gap-base);
+    background: var(--color-bg-alt);
+    border-radius: 4px;
+}
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author img {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-author .fn {
+    font-weight: 600;
+    font-style: normal;
+}
+
+.comment-metadata {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.comment-metadata a {
+    color: #666;
+    text-decoration: none;
+}
+
+.comment-content {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.reply {
+    margin-top: 10px;
+}
+
+.comment-reply-link {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.comment-reply-link:hover {
+    text-decoration: underline;
+}
+
+/* Nested Comments */
+.children {
+    list-style: none;
+    margin-left: 30px;
+    margin-top: var(--gap-base);
+}
+
+@media (max-width: 600px) {
+    .children {
+        margin-left: 15px;
+    }
+}
